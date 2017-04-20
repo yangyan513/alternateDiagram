@@ -8,12 +8,12 @@ function carouselFigure(element,params){
 	this.obj = {};
 	this.onOff = {
 		changePageEvent:true,//前后切换页事件绑定
+		loop:true,//是否循环
 		autoLoop:false,//自动滚动
 		autoLoopTime:3000,//自动滚动间隔时间
 		resizeEvent:false,//是否随屏幕大小改变
 		paginationEvent:true,//页码点是否绑定跳转事件
 	};
-	params = {loop:true};
 	this.init = function(){
 		isPC = cf.pcFlag();
 		if(ele.length == 0){
@@ -21,7 +21,9 @@ function carouselFigure(element,params){
 			return;
 		}else{
 			if(params && (params.constructor == Object)){
-				cf.onOff = $.extend(true, cf.onOff, params);
+				for(var key in params){
+					cf.onOff[key] = params[key];
+				}
 			}else{
 				console.log("参数格式不对，应该为Object");
 			}
@@ -43,8 +45,8 @@ function carouselFigure(element,params){
 		cf.obj.pagination = newEle.find(".carouseFigureBox-pagination span");
 		if(len > 1){
 			cf.autoScroll();
-			if(params.loop == true){
-				cf.loop(liList);
+			if(cf.onOff.loop == true){
+				cf.loop();
 				liList.eq(1).addClass("activeC");
 				index++;
 				ele.find(".carouseFigureBox-img").css({"transform":"translateX("+(-cf.obj.width*index)+"px)","transition-duration":"300ms"});
@@ -109,6 +111,10 @@ function carouselFigure(element,params){
 			},cf.onOff.autoLoopTime);
 		}
 	};
+	//停止自动滚动
+	this.stopAutoScroll = function(){
+		clearInterval(autoScroll);
+	};
 	this.autoScrollFun = function(){
 		var liList = cf.obj.liList,
 			pagination = cf.obj.pagination;
@@ -126,6 +132,7 @@ function carouselFigure(element,params){
 		if(nextIndex > maxIndex){
 			nextIndex = 0;
 		}
+		console.log(index);
 		liList.removeClass();
 		newEle.find(".carouseFigureBox-img").css({"transform":"translateX("+(-cf.obj.width*index)+"px)","transition-duration":"300ms"});
 		if(index == maxIndex){
@@ -168,7 +175,7 @@ function carouselFigure(element,params){
 		if(isPC){//PC端
 			ele.on({"mousedown":function(e){
 				flag = true;
-				clearInterval(autoScroll);
+				cf.stopAutoScroll();
 				startP = cf.position(e,$(this));
 				endP = undefined;
 				ele.on("mousemove",move);
