@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>轮番图</title>
+		<link rel="stylesheet" href="css/carouselFigure.css" />
+	</head>
+	<body>
+		<div class="carouseFigureBox" id="carouselFigure">
+			<ul class="carouseFigureBox-img">
+				<li><img src="imgs/1.jpg" alt="" /></li>
+				<li><img src="imgs/2.jpg" alt="" /></li>
+				<li><img src="imgs/3.jpg" alt="" /></li>
+			</ul>
+			<span class="carouseFigurePre"></span>
+			<span class="carouseFigureNext"></span>
+			<div class="carouseFigureBox-pagination">
+			</div>
+		</div>
+		<div id="log"></div>
+		<script type="text/javascript" src="js/jquery-2.1.1.min.js" ></script>
+		<script type="text/javascript" src="js/carouselFigure.js" ></script>
+	</body>
+	<script type="text/javascript">
+		var t = new carouselFigure("#carouselFigure").init();
+	</script>
+</html>
